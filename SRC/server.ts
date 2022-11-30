@@ -6,15 +6,19 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
+import productroute from "./serverroute/product2";
+import orderroute from "./serverroute/order2";
 
 const app = express();
 const port = sConfig.port;
 sdatabase.connect(sConfig.DB.name, sConfig.DB.password);
 
-app.use(cors());
-app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
+app.use(morgan("dev"));
+app.use("/product", productroute);
+app.use("/order", orderroute);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("get made ready");

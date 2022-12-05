@@ -9,7 +9,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 
 DataBase.connect(appConfig.database.name, appConfig.database.password);
-
+console.log(appConfig.database.name + ":" + appConfig.database.password);
 const app = express();
 
 app.use(cors());

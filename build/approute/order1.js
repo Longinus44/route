@@ -52,9 +52,6 @@ router.post("/", (req, res) => {
         res.send("order post made");
     });
 });
-router.patch("/", (req, res) => {
-    res.send("order updated");
-});
 router.delete("/", (req, res) => {
     res.send("order deleted");
 });

@@ -39,11 +39,12 @@ router.post("/", (req: Request, res: Response) => {
   const Id = req.body.productId;
   Product.findById(Id)
     .then((result) => {
-      console.log(result);
-      if (result) {
+      // console.log(result);
+      if (!result) {
+        res.send("product doesn't exists");
+      } else {
         const order = new Order({
-          orderId: new mongoose.Types.ObjectId(),
-          productId: req.body.productId,
+          product: req.body.productId,
           quantity: req.body.quantity,
         });
         order
@@ -52,10 +53,8 @@ router.post("/", (req: Request, res: Response) => {
             res.send(result);
           })
           .catch((err) => {
-            res.send(err);
+            res.status(409).send(err.message);
           });
-      } else {
-        res.send("product doesn't exists");
       }
     })
     .catch((err) => {

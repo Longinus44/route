@@ -75,7 +75,7 @@ router.post("/", (req, res) => {
                         _id: result._id,
                         product: result.product,
                         quantity: result.quantity,
-                        createdat: new Date(),
+                        createdat: Date.now(),
                     },
                     Request: {
                         type: "get",

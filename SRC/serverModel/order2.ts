@@ -1,17 +1,18 @@
 import mongoose, { Types } from "mongoose";
 
 interface Iorder {
-  Id: Types.ObjectId;
-  productId: Types.ObjectId;
+  _Id: Types.ObjectId;
+  product: Types.ObjectId;
   quantity: number;
 }
 
 const orderschema = new mongoose.Schema({
-  orderId: mongoose.Schema.Types.ObjectId,
-  productId: {
-    type: String,
-    unique: true,
+  _Id: mongoose.Schema.Types.ObjectId,
+  product: {
     ref: "Product",
+    type: mongoose.Schema.Types.ObjectId,
+    String,
+    // unique: true,
     required: true,
   },
   quantity: {

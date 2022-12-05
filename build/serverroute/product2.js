@@ -7,6 +7,8 @@ require("dotenv").config();
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const product2_1 = require("../serverModel/product2");
+// import checkAuth from '../middleware/chech-Auth2'
+const checkAuth = require("../middleware/chech-Auth2");
 const router = express_1.default.Router();
 router.get("/", (req, res) => {
     product2_1.productmodel.find()
@@ -51,7 +53,7 @@ router.get("/:productId", (req, res) => {
         res.send(err.message);
     });
 });
-router.post("/", (req, res) => {
+router.post("/", checkAuth, (req, res) => {
     const name = req.body.name;
     product2_1.productmodel.findOne({ name })
         .then((result) => {
@@ -81,12 +83,13 @@ router.post("/", (req, res) => {
 router.patch("/:productId", (req, res) => {
     const id = req.params.productId;
     const { name, price } = req.body;
-    product2_1.productmodel.findByIdAndUpdate({ id: id }, { $Set: { name, price } }, { new: true })
+    product2_1.productmodel.findByIdAndUpdate({ _id: id }, { $set: { name, price } }, { new: true })
         .then((result) => {
         res.send("product updated");
+        console.log(result);
     })
         .catch((err) => {
-        res.send(err.message);
+        res.status(500).send(err.message);
     });
 });
 router.delete("/:productId", (req, res) => {

@@ -53,10 +53,6 @@ router.post("/", (req: Request, res: Response) => {
     });
 });
 
-router.patch("/", (req: Request, res: Response) => {
-  res.send("order updated");
-});
-
 router.delete("/", (req: Request, res: Response) => {
   res.send("order deleted");
 });

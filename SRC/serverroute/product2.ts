@@ -2,7 +2,8 @@ require("dotenv").config();
 import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import { productmodel as Product } from "../serverModel/product2";
-
+// import checkAuth from '../middleware/chech-Auth2'
+const checkAuth = require("../middleware/chech-Auth2");
 const router = express.Router();
 
 router.get("/", (req: Request, res: Response) => {
@@ -48,7 +49,7 @@ router.get("/:productId", (req: Request, res: Response) => {
     });
 });
 
-router.post("/", (req: Request, res: Response) => {
+router.post("/", checkAuth, (req: Request, res: Response) => {
   const name = req.body.name;
   Product.findOne({ name })
     .then((result) => {

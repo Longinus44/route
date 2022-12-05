@@ -13,6 +13,7 @@ const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const body_parser_1 = __importDefault(require("body-parser"));
 database_1.DataBase.connect(appConfig_1.appConfig.database.name, appConfig_1.appConfig.database.password);
+console.log(appConfig_1.appConfig.database.name + ":" + appConfig_1.appConfig.database.password);
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.urlencoded({ extended: true }));

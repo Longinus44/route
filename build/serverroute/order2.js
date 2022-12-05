@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
 const express_1 = __importDefault(require("express"));
-const mongoose_1 = __importDefault(require("mongoose"));
 const product2_1 = require("../serverModel/product2");
 const order2_1 = require("../serverModel/order2");
 const router = express_1.default.Router();
@@ -42,11 +41,13 @@ router.post("/", (req, res) => {
     const Id = req.body.productId;
     product2_1.productmodel.findById(Id)
         .then((result) => {
-        console.log(result);
-        if (result) {
+        // console.log(result);
+        if (!result) {
+            res.send("product doesn't exists");
+        }
+        else {
             const order = new order2_1.ordermodel({
-                orderId: new mongoose_1.default.Types.ObjectId(),
-                productId: req.body.productId,
+                product: req.body.productId,
                 quantity: req.body.quantity,
             });
             order
@@ -55,11 +56,8 @@ router.post("/", (req, res) => {
                 res.send(result);
             })
                 .catch((err) => {
-                res.send(err);
+                res.status(409).send(err.message);
             });
-        }
-        else {
-            res.send("product doesn't exists");
         }
     })
         .catch((err) => {

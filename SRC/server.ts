@@ -8,6 +8,8 @@ import cors from "cors";
 import morgan from "morgan";
 import productroute from "./serverroute/product2";
 import orderroute from "./serverroute/order2";
+import userroute from "./serverroute/user2";
+import { appConfig } from "./Config/appConfig";
 
 const app = express();
 const port = sConfig.port;
@@ -19,6 +21,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use("/product", productroute);
 app.use("/order", orderroute);
+app.use("/user", userroute);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("get made ready");

@@ -1,6 +1,6 @@
 import { check, validationResult } from "express-validator";
-import { request } from "http";
 import express, { Request, Response, NextFunction } from "express";
+// import router from "express";
 
 export function validatesignupSchema(
   req: Request,
@@ -16,3 +16,4 @@ export function validatesignupSchema(
   }
   next();
 }
+// export default router;

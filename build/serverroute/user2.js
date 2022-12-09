@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("../serverConfig/config");
-const signup_validator_1 = require("../middleware/signup validator");
+const signup_validator_1 = __importDefault(require("../middleware/signup validator"));
 const express_1 = __importDefault(require("express"));
 const user2_1 = require("../serverModel/user2");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
         }
     });
 });
-router.post("/signup", sign_up_1.bodySchema, signup_validator_1.validatesignupSchema, (req, res) => {
+router.post("/signup", sign_up_1.bodySchema, signup_validator_1.default, (req, res) => {
     user2_1.userModel.find({ email: req.body.email })
         .then((result) => {
         if (result.length > 0) {

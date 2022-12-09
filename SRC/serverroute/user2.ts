@@ -1,5 +1,5 @@
 import { sConfig } from "../serverConfig/config";
-import { validatesignupSchema } from "../middleware/signup validator";
+import validatesignupSchema from "../middleware/signup validator";
 import express, { Request, Response, NextFunction } from "express";
 import { userModel as User } from "../serverModel/user2";
 import bcrypt from "bcrypt";

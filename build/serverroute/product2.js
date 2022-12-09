@@ -7,10 +7,51 @@ require("dotenv").config();
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const product2_1 = require("../serverModel/product2");
-// import checkAuth from '../middleware/chech-Auth2'
-const checkAuth = require("../middleware/chech-Auth2");
+// const auth = require("../middleware/chech-Auth2");
+const check_auth_1 = require("../middleware/check-auth");
+const multer_1 = __importDefault(require("multer"));
+const imagemodel_1 = require("../Model/imagemodel");
+const path_1 = __importDefault(require("path"));
 const router = express_1.default.Router();
-router.get("/", (req, res) => {
+router.use("/upload", express_1.default.static("./upload/images"));
+// router.use(errHandler);
+const storage = multer_1.default.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./upload/images");
+    },
+    filename(req, file, cb) {
+        cb(null, `${file.fieldname}${Date.now()}${path_1.default.extname(file.filename)}`);
+    },
+});
+const upload = (0, multer_1.default)({
+    storage: storage,
+    limits: {
+        fileSize: 50000,
+    },
+});
+// function errHandler(err: any, req: Request, res: Response) {
+//   console.log(err);
+//   res.send(err.message);
+// }
+router.post("/upload", upload.single("image"), (req, res) => {
+    const newImage = new imagemodel_1.imageModel({
+        name: req.body.name,
+        image: req.body.image,
+    });
+    newImage
+        .save()
+        .then((result) => {
+        res.send(result);
+    })
+        .catch((err) => {
+        console.log(err);
+        res.send(err.message);
+    })
+        .catch((err) => {
+        res.send(err.message);
+    });
+});
+router.get("/", check_auth_1.check_auth, (req, res) => {
     product2_1.productmodel.find()
         .then((result) => {
         if (result.length <= 0) {
@@ -53,7 +94,7 @@ router.get("/:productId", (req, res) => {
         res.send(err.message);
     });
 });
-router.post("/", checkAuth, (req, res) => {
+router.post("/", (req, res) => {
     const name = req.body.name;
     product2_1.productmodel.findOne({ name })
         .then((result) => {

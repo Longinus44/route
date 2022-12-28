@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && nodemon ./SRC/server.ts",
+    "start": "tsc && nodemon ./SRC/app.ts",
     "test": "jest",
     "build": "tsc"
   },

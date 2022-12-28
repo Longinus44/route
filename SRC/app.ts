@@ -1,29 +1,29 @@
+// import Express, { Request, Response, NextFunction } from "express";
 require("dotenv").config();
-import express, { Request, Response, NextFunction } from "express";
-import { DataBase } from "./database";
-import { appConfig } from "./Config/appConfig";
-import productroute from "../SRC/approute/product1";
-import orderroute from "../SRC/approute/order1";
+import { config } from "./CONFIG/config";
+import Express, { Request, Response, NextFunction } from "express";
+import { dataBase } from "./Database/database";
+import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
-import bodyParser from "body-parser";
+import userroute from "./ROUTE/user";
 
-DataBase.connect(appConfig.database.name, appConfig.database.password);
-console.log(appConfig.database.name + ":" + appConfig.database.password);
-const app = express();
+const app = Express();
+const port = config.port;
 
-app.use(cors());
+dataBase.connect(config.dataBase.Name, config.dataBase.Password);
+
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan("dev"));
 app.use(bodyParser.json());
 
-app.use("/product", productroute);
-app.use("/order", orderroute);
+app.use(cors());
+app.use(morgan("dev"));
+app.use("/user", userroute);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("get made");
+  res.send("ready");
 });
 
-app.listen(appConfig.port, () => {
-  console.info(`Application running on ${appConfig.host}:${appConfig.port}`);
+app.listen(port, () => {
+  console.log(`application is live on ${config.host}${config.port}`);
 });

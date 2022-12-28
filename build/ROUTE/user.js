@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const deletecontroller_1 = require("../CONTROLLER/deletecontroller");
+const patchcontroller_1 = require("../CONTROLLER/patchcontroller");
+const getcontroller_1 = __importDefault(require("../CONTROLLER/getcontroller"));
+const deletecontroller_2 = require("../CONTROLLER/deletecontroller");
+const registercontroller_1 = require("../CONTROLLER/registercontroller");
+const logincontroller_1 = require("../CONTROLLER/logincontroller");
+const signup_validator_1 = require("../MIDDLEWARE/signup_validator");
+const router = express_1.default.Router();
+router.get("/", getcontroller_1.default.getUser);
+router.get("/get-by-id/:id", getcontroller_1.default.getUserById);
+router.get("/get-by-email/:email", getcontroller_1.default.getUserByEmail);
+router.post("/register", signup_validator_1.signupvalidator, registercontroller_1.registerUser);
+router.post("/login", logincontroller_1.loginUser);
+router.patch("/:id", patchcontroller_1.updateUser);
+router.delete("/by-id/:id", deletecontroller_2.deleteUser);
+router.delete("/by-email/:email", deletecontroller_1.deletebyEmail);
+exports.default = router;

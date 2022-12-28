@@ -16,32 +16,46 @@ const router = express_1.default.Router();
 router.use("/upload", express_1.default.static("./upload/images"));
 // router.use(errHandler);
 const storage = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "./upload/images");
-    },
-    filename(req, file, cb) {
-        cb(null, `${file.fieldname}${Date.now()}${path_1.default.extname(file.filename)}`);
+    destination: "./upload/images",
+    filename: (req, file, cb) => {
+        cb(null, `${file.fieldname}${Date.now()}${path_1.default.extname(file.originalname)}`);
     },
 });
 const upload = (0, multer_1.default)({
     storage: storage,
-    limits: {
-        fileSize: 50000,
-    },
+    // limits: {
+    //   fileSize: 50000,
+    // },
 });
 // function errHandler(err: any, req: Request, res: Response) {
 //   console.log(err);
 //   res.send(err.message);
 // }
 router.post("/upload", upload.single("image"), (req, res) => {
+    var _a;
     const newImage = new imagemodel_1.imageModel({
         name: req.body.name,
-        image: req.body.image,
+        image: {
+            data: (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename,
+            contentType: "image/jpeg",
+        },
     });
     newImage
         .save()
         .then((result) => {
-        res.send(result);
+        var _a;
+        const response = {
+            status: true,
+            message: "Image uploaded successfully",
+            data: {
+                // return {
+                id: result.id,
+                name: result.name,
+                image: `http://localhost:6000/image/${(_a = req.file) === null || _a === void 0 ? void 0 : _a.filename}`,
+                // };
+            },
+        };
+        res.send(response);
     })
         .catch((err) => {
         console.log(err);

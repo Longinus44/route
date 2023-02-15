@@ -1,59 +1,64 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
+exports.getAllUser = void 0;
 const userModel_1 = require("../MODEL/userModel");
-const router = express_1.default.Router();
-const getUser = (req, res) => {
-    userModel_1.userModel.find()
-        .select("firstname lastname othername email password date_of_birth state_of_origin")
-        .then((user) => {
-        if (user) {
-            res.status(200).send({
-                count: user.length,
-                user: user,
-            });
+const getAllUser = async (req, res) => {
+    try {
+        const user = userModel_1.userModel.find().select("firstname lastname othername email password date_of_birth state_of_origin");
+        const result = await user;
+        if (result) {
+            return res.send(result);
         }
-        else {
-            res.status(404).send("Not Found");
-        }
-    })
-        .catch((err) => {
-        res.status(400).send(err.message);
-    });
+        return res.status(404).send("No user found");
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
 };
-const getUserById = (req, res) => {
-    const id = req.params.id;
-    userModel_1.userModel.findById(id)
-        .then((user) => {
-        if (user) {
-            res.status(200).send(user);
+exports.getAllUser = getAllUser;
+const getUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = userModel_1.userModel.findById(id);
+        const result = await user;
+        if (result) {
+            return res.send(result);
         }
-        else {
-            res.status(404).send("Not Found");
+        return res.status(404).send(" Not Found");
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
+};
+const getUserByEmail = async (req, res) => {
+    try {
+        const email = req.params.email;
+        const user = userModel_1.userModel.find({ email: email });
+        const result = await user;
+        if (result) {
+            return res.send(result);
         }
-    })
-        .catch((err) => {
-        res.status(400).send("wrong input");
-    });
+        return res.status(404).send(" Not Found");
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
 };
-const getUserByEmail = (req, res) => {
-    const email = req.params.email;
-    userModel_1.userModel.find({ email: email })
-        .then((user) => {
-        res.send(user);
-    })
-        .catch((err) => {
-        res.status(404).send(err.message);
-    })
-        .catch((err) => {
-        res.status(400).send("wrong input");
-    });
-};
+// export default router
 exports.default = {
-    getUser,
+    getAllUser: exports.getAllUser,
     getUserById,
     getUserByEmail,
 };
+// .then((user) => {
+// if (user) {
+//   res.status(200).send({
+//     count: user.length,
+//     user: user,
+//   });
+// }
+// else
+//    {
+//     res.status(404).send("Not Found");
+//   }
+// }

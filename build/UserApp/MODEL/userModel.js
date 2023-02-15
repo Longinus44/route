@@ -19,6 +19,6 @@ const userSchema = new mongoose_1.default.Schema({
         contentType: String,
         url: String,
     },
-    createdAt: { type: Number },
+    created: { type: String },
 });
 exports.userModel = mongoose_1.default.model("User", userSchema);

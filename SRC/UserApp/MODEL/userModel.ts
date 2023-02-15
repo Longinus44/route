@@ -11,6 +11,7 @@ interface Iuser {
   state_of_origin: string;
   phone: number;
   image: string;
+  created: string;
 }
 
 const userSchema = new mongoose.Schema({
@@ -27,6 +28,7 @@ const userSchema = new mongoose.Schema({
     contentType: String,
     url: String,
   },
+  created: { type: String },
 });
 
 export const userModel = mongoose.model<Iuser>("User", userSchema);

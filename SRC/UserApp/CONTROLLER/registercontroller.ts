@@ -24,7 +24,15 @@ const upload = multer({
 });
 
 export const registerUser = (req: Request, res: Response) => {
-  const { email, phone } = req.body;
+  const {
+    email,
+    phone,
+    firstname,
+    lastname,
+    othername,
+    date_of_birth,
+    state_of_origin,
+  } = req.body;
   User.find({ email, phone }).then((user) => {
     if (user.length > 0) {
       res.status(409).send("email/number already exists");
@@ -36,35 +44,25 @@ export const registerUser = (req: Request, res: Response) => {
           console.log(err.message);
         } else {
           const user = new User({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            othername: req.body.othername,
-            email: req.body.email,
+            firstname,
+            lastname,
+            othername,
+            email,
             password: hash,
-            date_of_birth: req.body.date_of_birth,
-            state_of_origin: req.body.state_of_origin,
-            phone: req.body.phone,
+            date_of_birth,
+            state_of_origin,
+            phone,
             image: {
               data: req.file?.filename,
               contentType: "image/jpeg",
               url: `http://localhost:7070/upload/image/${file}`,
             },
           });
-          console.log(req.body);
           user
             .save()
             .then((user) => {
               const response = {
-                user: {
-                  firstName: user.firstname,
-                  lastName: user.lastname,
-                  othername: user.othername,
-                  email: user.email,
-                  password: user.password,
-                  date_of_birth: user.date_of_birth,
-                  state_of_origin: user.state_of_origin,
-                  image_url: `http://localhost:7070/upload/image/${file}`,
-                },
+                user: { user },
               };
               res.send(response);
             })
@@ -75,4 +73,9 @@ export const registerUser = (req: Request, res: Response) => {
       });
     }
   });
+};
+
+export default {
+  router,
+  registerUser,
 };

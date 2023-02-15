@@ -7,18 +7,26 @@ exports.updateUser = void 0;
 const express_1 = __importDefault(require("express"));
 const userModel_1 = require("../MODEL/userModel");
 const router = express_1.default.Router();
-const updateUser = (req, res) => {
-    const id = req.params.id;
-    const { firstname, lastname } = req.body;
-    userModel_1.userModel.findByIdAndUpdate({ _id: id }, { $set: { firstname, lastname } }, { new: true })
-        .then((user) => {
-        res.send({
-            user,
-            updated_at: new Date(),
-        });
-    })
-        .catch((err) => {
-        res.status(400).send(err.message);
-    });
+const updateUser = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { firstname, lastname } = req.body;
+        const check = userModel_1.userModel.findByIdAndUpdate({ _id: id }, { $set: { firstname, lastname } }, { new: true });
+        const result = await check;
+        if (result) {
+            return res.send({
+                result,
+                updated_at: new Date(),
+            });
+        }
+        return res.status(404).send("User not found");
+    }
+    catch (err) {
+        res.status(400).send(err);
+    }
 };
 exports.updateUser = updateUser;
+exports.default = {
+    router,
+    updateUser: exports.updateUser,
+};

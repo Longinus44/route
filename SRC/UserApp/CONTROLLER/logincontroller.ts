@@ -3,6 +3,7 @@ import Express, { Request, Response, NextFunction } from "express";
 import { userModel as User } from "../MODEL/userModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import router from "./registercontroller";
 
 export const loginUser = (req: Request, res: Response) => {
   User.find({ email: req.body.email }).then((user) => {
@@ -27,4 +28,9 @@ export const loginUser = (req: Request, res: Response) => {
       });
     }
   });
+};
+
+export default {
+  router,
+  loginUser,
 };

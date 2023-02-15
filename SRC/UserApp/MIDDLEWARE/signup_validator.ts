@@ -8,7 +8,8 @@ export function signupvalidator(
 ) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(400).send({ errors: "validation", message: errors.array });
+    res.status(400).send({ errors: "validation", message: errors.array() });
+  } else {
+    next();
   }
-  next();
 }

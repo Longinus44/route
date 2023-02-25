@@ -9,15 +9,17 @@ const TodoConfig_1 = require("../Todoconfig/TodoConfig");
 const userModel_1 = require("../TodoModel/userModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const TodoModel_1 = require("../TodoModel/TodoModel");
 class userController {
 }
 exports.userController = userController;
 _a = userController;
 userController.getAllUser = async (req, res) => {
     try {
-        const users = await userModel_1.userModel.find().select("id username Todo");
+        const users = await userModel_1.userModel.find().populate("Todo", "list");
+        const mytodo = await TodoModel_1.TodoSchema.find({ users: users });
         if (users) {
-            return res.send(users);
+            return res.send({ user: users, todo: mytodo });
         }
         return res.status(404).send("no user found");
     }
@@ -69,7 +71,7 @@ userController.loginUser = async (req, res) => {
             return res.status(400).send("Auth failed ");
         }
         const token = jsonwebtoken_1.default.sign({ user: match }, TodoConfig_1.Tconfig.JWTCODE, {
-            expiresIn: "5000s",
+            expiresIn: "500s",
         });
         return res.send({ msg: "login successful", token: token });
     }

@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const userController_1 = require("../Controllers/userController");
+const bodyValidator_1 = require("../middleWares/bodyValidator");
+const signupValidator_1 = require("../middleWares/signupValidator");
+const loginValidator_1 = require("../middleWares/loginValidator");
+const userAuth_1 = require("../Auth/userAuth");
+const userToken_1 = require("../Auth/userToken");
+const router = express_1.default.Router();
+router.get("/", userController_1.userController.getAllUser);
+router.get("/:id", userAuth_1.authorisedUser, userToken_1.check_token, userController_1.userController.getUserById);
+router.post("/signup", bodyValidator_1.bodyValidator, signupValidator_1.validate, userController_1.userController.createUser);
+router.post("/login", loginValidator_1.loginValidator, signupValidator_1.validate, userController_1.userController.loginUser);
+router.patch("/:id", userAuth_1.authorisedUser, userToken_1.check_token, userController_1.userController.updateUser);
+router.delete("/:id", userController_1.userController.deleteUser);
+exports.default = router;

@@ -8,9 +8,11 @@ import { TodoSchema as Todo } from "../TodoModel/TodoModel";
 export class userController {
   static getAllUser = async (req: Request, res: Response) => {
     try {
-      const users = await User.find().select("id username Todo");
+      const users = await User.find().populate("Todo", "list");
+      const mytodo = await Todo.find({ users: users });
+
       if (users) {
-        return res.send(users);
+        return res.send({ user: users, todo: mytodo });
       }
       return res.status(404).send("no user found");
     } catch (err) {
@@ -63,7 +65,7 @@ export class userController {
         return res.status(400).send("Auth failed ");
       }
       const token = Jwt.sign({ user: match }, Tconfig.JWTCODE, {
-        expiresIn: "5000s",
+        expiresIn: "500s",
       });
       return res.send({ msg: "login successful", token: token });
     } catch (err) {

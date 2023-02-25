@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && nodemon ./SRC/todo.ts",
+    "start": "tsc && nodemon ./SRC/server.ts",
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "knex": "ts-node ./node_modules/Knex/bin/cli.js --knexfile ./SRC/knexfile.ts",
+    "db.run.migration": "npm run knex -- migrate:latest",
+    "db.generate.migration": "npm run knex -- migrate:make"
   },
   "keywords": [],
   "author": "",
@@ -32,12 +35,19 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-validator": "^6.14.2",
-    "jsonwebtoken": "^8.5.1",
+    "js": "^0.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "knex": "^2.4.2",
+    "knex-populate": "^2.1.2",
     "mongoose": "^6.6.5",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
     "node": "^19.1.0",
+    "objection": "^3.0.1",
+    "populate": "^5.0.1",
     "session": "^0.1.0",
+    "sql": "^0.78.0",
     "uuid": "^9.0.0"
   }
 }

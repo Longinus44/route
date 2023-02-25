@@ -6,7 +6,7 @@ import { userModel as User } from "../TodoModel/userModel";
 export class TodoController {
   static getAllTodo = async (req: Request, res: Response) => {
     try {
-      const AllTodo = await Todo.find();
+      const AllTodo = await Todo.find().populate("user", "username");
       if (!AllTodo) {
         return res.status(404).send("list is empty");
       }
@@ -30,15 +30,6 @@ export class TodoController {
     }
   };
 
-  static getAllMyTodo = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    try {
-      const userTodo = await Todo.findById();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   static createTodo = async (req: Request, res: Response) => {
     const { Title, list, user } = req.body;
     try {
@@ -46,16 +37,15 @@ export class TodoController {
       if (!userExist) {
         return res.status(400).send("unauthorized user");
       }
-      const todoItem = Todo.create({
+      const todoItem = new Todo({
         Title,
         list,
-        checked: Boolean,
         user,
       });
       if (!todoItem) {
         return res.status(401).send("fill the required ");
       }
-      // (await todoItem).save();
+      await todoItem.save();
       return res.send(todoItem);
     } catch (err) {
       res.send("user with id not found");

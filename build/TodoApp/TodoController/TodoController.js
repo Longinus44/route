@@ -10,7 +10,7 @@ exports.TodoController = TodoController;
 _a = TodoController;
 TodoController.getAllTodo = async (req, res) => {
     try {
-        const AllTodo = await TodoModel_1.TodoSchema.find();
+        const AllTodo = await TodoModel_1.TodoSchema.find().populate("user", "username");
         if (!AllTodo) {
             return res.status(404).send("list is empty");
         }
@@ -35,28 +35,25 @@ TodoController.getTodoById = async (req, res) => {
     }
 };
 TodoController.createTodo = async (req, res) => {
-    const { Title, list, checked } = req.body;
-    const { id } = req.params;
+    const { Title, list, user } = req.body;
     try {
-        const userExist = await userModel_1.userModel.findById(id);
+        const userExist = await userModel_1.userModel.findById(user);
         if (!userExist) {
             return res.status(400).send("unauthorized user");
         }
         const todoItem = new TodoModel_1.TodoSchema({
             Title,
             list,
-            checked,
-            user: id,
+            user,
         });
         if (!todoItem) {
-            return res.status(400).send("fill the required ");
+            return res.status(401).send("fill the required ");
         }
-        todoItem.save();
+        await todoItem.save();
         return res.send(todoItem);
     }
     catch (err) {
         res.send("user with id not found");
-        // console.log(err);
     }
 };
 TodoController.updateTodo = async (req, res) => {

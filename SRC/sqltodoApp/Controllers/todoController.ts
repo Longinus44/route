@@ -1,4 +1,3 @@
-import { dbConfig } from "../sqlConfig/sqlConfig";
 import express, { Request, Response, NextFunction } from "express";
 import { TodoModel as Todo } from "../sqlModel/todoModel";
 import { UserModel } from "../sqlModel/UserModel";
@@ -14,8 +13,8 @@ export class todoController {
       } else {
         return res.status(404).send("no users to display");
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.status(500).send(err.message);
     }
   };
 
@@ -35,8 +34,8 @@ export class todoController {
       } else {
         return res.status(404).send("no todo with Id");
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.status(500).send(err.message);
     }
   };
 
@@ -51,7 +50,7 @@ export class todoController {
       };
       const todoTask = await Todo.query().insertAndFetch(todoData);
       if (todoTask) {
-        return res.send("todo added");
+        return res.status(201).send("todo created");
       } else {
         return res.status(400).send("error occured while processing");
       }
@@ -72,8 +71,8 @@ export class todoController {
         return res.sendStatus(200).send(updatedItem);
       }
       return res.status(400).send("wrong credentials");
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.send(err.message);
     }
   };
 
@@ -85,8 +84,8 @@ export class todoController {
         return res.send(`todo deleted`);
       }
       return res.status(400).send("todo not found");
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.send(err.message);
     }
   };
 }

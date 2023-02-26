@@ -15,8 +15,8 @@ export class userController {
       } else {
         return res.send(user);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.send(err.message);
     }
   };
 
@@ -31,8 +31,8 @@ export class userController {
         return res.send(userWithId);
       }
       return res.status(404).send("user with Id not found");
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.send(err.message);
     }
   };
 
@@ -48,14 +48,12 @@ export class userController {
       const userExist = await UserModel.query().where({ email: email });
       if (!userExist.length) {
         const savedUser = await UserModel.query().insert(newUser);
-        return res
-          .status(201)
-          .send({ message: "user created", user: savedUser });
+        return res.status(201).send("user created");
       } else {
         return res.status(409).send("user already exist");
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.send(err.message);
     }
   };
 
@@ -74,8 +72,8 @@ export class userController {
         return res.status(401).send("wrong email/passsword ");
       }
       return res.status(404).send("user doesn't exist");
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.send(err.message);
     }
   };
 
@@ -91,22 +89,22 @@ export class userController {
       } else {
         return res.status(404).send("user not found");
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      return res.send(err.message);
     }
   };
 
-  static deleteUser = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    try {
-      const deletedUser = await UserModel.query().deleteById(id);
-      if (deletedUser) {
-        return res.send("user deleted");
-      } else {
-        return res.status(404).send("user with ID no found");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // static deleteUser = async (req: Request, res: Response) => {
+  //   const { id } = req.params;
+  //   try {
+  //     const deletedUser = await UserModel.query().deleteById(id);
+  //     if (deletedUser) {
+  //       return res.send("user deleted");
+  //     } else {
+  //       return res.status(404).send("user with ID no found");
+  //     }
+  //   } catch (err: any) {
+  //     return res.send(err.message);
+  //   }
+  // };
 }

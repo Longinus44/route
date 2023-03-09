@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import { userController } from "../Controllers/userController";
 import { bodyValidator } from "../middleWares/bodyValidator";
 import { validate } from "../middleWares/signupValidator";
@@ -18,6 +18,6 @@ router.post("/login", loginValidator, validate, userController.loginUser);
 
 router.patch("/:id", authorisedUser, check_token, userController.updateUser);
 
-router.delete("/:id", userController.deleteUser);
+// router.delete("/:id", userController.deleteUser);
 
 export default router;

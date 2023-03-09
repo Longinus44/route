@@ -1,15 +1,15 @@
-import express, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { UserModel } from "../sqlModel/UserModel";
 import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
-import { dbConfig } from "../sqlConfig/sqlConfig";
+import { dbconfig } from "../sqlConfig/sqlConfig";
+import { ItemModel } from "../sqlModel/todoItemModel";
+import { itemController } from "./itemController";
 
 export class userController {
   static getAllUser = async (req: Request, res: Response) => {
     try {
-      const user = await UserModel.query()
-        .select("id", "name", "email")
-        .withGraphFetched("todo");
+      const user = await UserModel.query().select("id", "name", "email");
       if (!user.length) {
         return res.status(404).send("no user found");
       } else {
@@ -25,8 +25,7 @@ export class userController {
     try {
       const userWithId = await UserModel.query()
         .findById(id)
-        .select("id", "name", "email")
-        .withGraphFetched("todo");
+        .select("id", "name", "email");
       if (userWithId) {
         return res.send(userWithId);
       }
@@ -37,14 +36,14 @@ export class userController {
   };
 
   static createUser = async (req: Request, res: Response) => {
-    const { name, email, password } = req.body;
-    const hashedPassword = bcrypt.hashSync(password, 7);
-    const newUser = {
-      name: name,
-      email: email,
-      password: hashedPassword,
-    };
     try {
+      const { name, email, password } = req.body;
+      const hashedPassword = bcrypt.hashSync(password, 7);
+      const newUser = {
+        name: name,
+        email: email,
+        password: hashedPassword,
+      };
       const userExist = await UserModel.query().where({ email: email });
       if (!userExist.length) {
         const savedUser = await UserModel.query().insert(newUser);
@@ -64,7 +63,7 @@ export class userController {
       if (userExist) {
         const isMatch = bcrypt.compareSync(password, userExist.password);
         if (isMatch) {
-          const token = Jwt.sign({ user_id: userExist.id }, dbConfig.jwtkey, {
+          const token = Jwt.sign({ user_id: userExist.id }, dbconfig.jwtkey, {
             expiresIn: "1h",
           });
           return res.send(token);

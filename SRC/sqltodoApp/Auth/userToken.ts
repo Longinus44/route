@@ -1,9 +1,9 @@
-import { dbConfig } from "../sqlConfig/sqlConfig";
+import { dbconfig } from "../sqlConfig/sqlConfig";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
 export const check_token = (req: any, res: Response, next: NextFunction) => {
-  const secretKey = dbConfig.jwtkey;
+  const secretKey = dbconfig.jwtkey;
   try {
     const token = req.header("Auth-token");
     if (!token) {

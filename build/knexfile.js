@@ -11,11 +11,11 @@ const sqlConfig_1 = require("./sqltodoApp/sqlConfig/sqlConfig");
  */
 exports.default = {
     development: {
-        client: sqlConfig_1.dbConfig.client,
+        client: sqlConfig_1.dbconfig.client,
         connection: {
-            user: sqlConfig_1.dbConfig.user,
-            password: sqlConfig_1.dbConfig.password,
-            database: sqlConfig_1.dbConfig.database,
+            user: sqlConfig_1.dbconfig.user,
+            password: sqlConfig_1.dbconfig.password,
+            database: sqlConfig_1.dbconfig.database,
         },
         pool: {
             min: 2,

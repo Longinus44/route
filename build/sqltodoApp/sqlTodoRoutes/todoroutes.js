@@ -10,8 +10,15 @@ const signupValidator_1 = require("../middleWares/signupValidator");
 const userAuth_1 = require("../Auth/userAuth");
 const userToken_1 = require("../Auth/userToken");
 const router = express_1.default.Router();
+router.get("/usertodo/:id", 
+// authorisedUser,
+// check_token,
+todoController_1.todoController.getUserTodo);
 router.get("/", userAuth_1.authorisedUser, userToken_1.check_token, todoController_1.todoController.getAllTodo);
-router.get("/by-id/:id", userAuth_1.authorisedUser, userToken_1.check_token, todoController_1.todoController.getTodoById);
+router.get("/by-id/:id", 
+// authorisedUser,
+// check_token,
+todoController_1.todoController.getTodoById);
 router.post("/create", userAuth_1.authorisedUser, userToken_1.check_token, todoValidator_1.todoValidator, signupValidator_1.validate, todoController_1.todoController.createTodo);
 router.patch("/:id", userAuth_1.authorisedUser, userToken_1.check_token, todoController_1.todoController.updateTodo);
 router.delete("/:id", userAuth_1.authorisedUser, userToken_1.check_token, todoController_1.todoController.deleteTodo);

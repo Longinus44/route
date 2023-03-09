@@ -7,6 +7,12 @@ import { check_token } from "../Auth/userToken";
 
 const router = express.Router();
 
+router.get(
+  "/usertodo",
+  authorisedUser,
+  check_token,
+  todoController.getUserTodo
+);
 router.get("/", authorisedUser, check_token, todoController.getAllTodo);
 
 router.get(

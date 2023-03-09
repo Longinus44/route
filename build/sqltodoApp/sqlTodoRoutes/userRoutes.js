@@ -16,5 +16,5 @@ router.get("/:id", userAuth_1.authorisedUser, userToken_1.check_token, userContr
 router.post("/signup", bodyValidator_1.bodyValidator, signupValidator_1.validate, userController_1.userController.createUser);
 router.post("/login", loginValidator_1.loginValidator, signupValidator_1.validate, userController_1.userController.loginUser);
 router.patch("/:id", userAuth_1.authorisedUser, userToken_1.check_token, userController_1.userController.updateUser);
-router.delete("/:id", userController_1.userController.deleteUser);
+// router.delete("/:id", userController.deleteUser);
 exports.default = router;

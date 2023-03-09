@@ -1,5 +1,6 @@
 {
     "fetch-client.horizontalLayout": "Split Style",
     "fetch-client.layout": "Vertical Split",
-    "fetch-client.timeOut": "1 min"
+    "fetch-client.timeOut": "1 min",
+    "editor.fontSize": 13
 }

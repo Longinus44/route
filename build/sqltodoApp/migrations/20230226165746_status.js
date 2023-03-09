@@ -2,16 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.down = exports.up = void 0;
 async function up(knex) {
-    return knex.schema.createTable("todo", (table) => {
-        table.uuid("id").primary();
-        table.string("title").notNullable;
+    return knex.schema.alterTable("todo", (table) => {
         table.enum("status", ["completed", "pending"]).defaultTo("pending");
-        table.string("user_id").references("id").inTable("user");
-        table.timestamps(true, true);
     });
 }
 exports.up = up;
 async function down(knex) {
-    return knex.schema.dropTable("todo");
+    return knex.schema.alterTable("todo", (table) => {
+        table.dropColumn("item");
+    });
 }
 exports.down = down;

@@ -9,7 +9,10 @@
     "build": "tsc",
     "knex": "ts-node ./node_modules/Knex/bin/cli.js --knexfile ./SRC/knexfile.ts",
     "db.run.migration": "npm run knex -- migrate:latest",
-    "db.generate.migration": "npm run knex -- migrate:make"
+    "db.generate.migration": "npm run knex -- migrate:make",
+    "db.run.migrate.down":"npm run knex migrate:down",
+    "db.run.migrate.up":"npm run knex migrate:up",
+    "db.run.migrate.rollback":"npm run knex -- migrate:rollback"
   },
   "keywords": [],
   "author": "",

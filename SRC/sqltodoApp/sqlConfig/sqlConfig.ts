@@ -1,7 +1,9 @@
 import path from "path";
-require("dotenv").config("../.env");
+require("dotenv").config({ path: "../.env" });
+import * as dotenv from "dotenv";
+dotenv.config();
 
-export const dbConfig = {
+export const dbconfig = {
   jwtkey: String(process.env.JWTKEY),
   client: String(process.env.client),
   user: String(process.env.user),

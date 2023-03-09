@@ -7,7 +7,7 @@ exports.check_token = void 0;
 const sqlConfig_1 = require("../sqlConfig/sqlConfig");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const check_token = (req, res, next) => {
-    const secretKey = sqlConfig_1.dbConfig.jwtkey;
+    const secretKey = sqlConfig_1.dbconfig.jwtkey;
     try {
         const token = req.header("Auth-token");
         if (!token) {

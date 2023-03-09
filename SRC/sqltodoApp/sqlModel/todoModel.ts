@@ -1,7 +1,6 @@
 import { ITodo } from "./Types/ITodoModel";
 import { Model } from "objection";
 import { v4 as uuidv4 } from "uuid";
-import { UserModel } from "./UserModel";
 
 export interface TodoModel extends ITodo {}
 
@@ -10,10 +9,20 @@ export class TodoModel extends Model {
 
   $beforeInsert(context: any) {
     this.id = uuidv4();
-    // this.status = "pending";
   }
 
   static relationMappings = {
+    item: {
+      relation: Model.HasManyRelation,
+      modelClass: __dirname + "/todoItemModel",
+      join: {
+        from: "todo.id",
+        to: "todo_item.todo_id",
+      },
+      filter: (query: any) => {
+        query.select("id", "item", "status", "todo_id");
+      },
+    },
     user: {
       relation: Model.BelongsToOneRelation,
       modelClass: __dirname + "/UserModel",

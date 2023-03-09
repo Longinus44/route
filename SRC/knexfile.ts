@@ -1,17 +1,16 @@
 // Update with your config settings.
 import path from "path";
-import { dbConfig } from "./sqltodoApp/sqlConfig/sqlConfig";
-
+import { dbconfig } from "./sqltodoApp/sqlConfig/sqlConfig";
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 export default {
   development: {
-    client: dbConfig.client,
+    client: dbconfig.client,
     connection: {
-      user: dbConfig.user,
-      password: dbConfig.password,
-      database: dbConfig.database,
+      user: dbconfig.user,
+      password: dbconfig.password,
+      database: dbconfig.database,
     },
     pool: {
       min: 2,

@@ -6,7 +6,7 @@ export const authorisedUser = (
   next: NextFunction
 ) => {
   try {
-    const token = req.header("Authorization");
+    const token = req.header("Auth-token");
 
     if (!token) {
       throw new Error();

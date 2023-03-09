@@ -15,9 +15,7 @@ exports.userController = userController;
 _a = userController;
 userController.getAllUser = async (req, res) => {
     try {
-        const user = await UserModel_1.UserModel.query()
-            .select("id", "name", "email")
-            .withGraphFetched("todo");
+        const user = await UserModel_1.UserModel.query().select("id", "name", "email");
         if (!user.length) {
             return res.status(404).send("no user found");
         }
@@ -26,44 +24,44 @@ userController.getAllUser = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(err);
+        return res.send(err.message);
     }
 };
 userController.getUserById = async (req, res) => {
     const { id } = req.params;
     try {
-        const userWithId = await UserModel_1.UserModel.query().findById(id);
+        const userWithId = await UserModel_1.UserModel.query()
+            .findById(id)
+            .select("id", "name", "email");
         if (userWithId) {
             return res.send(userWithId);
         }
         return res.status(404).send("user with Id not found");
     }
     catch (err) {
-        console.log(err);
+        return res.send(err.message);
     }
 };
 userController.createUser = async (req, res) => {
-    const { name, email, password } = req.body;
-    const hashedPassword = bcrypt_1.default.hashSync(password, 7);
-    const newUser = {
-        name: name,
-        email: email,
-        password: hashedPassword,
-    };
     try {
+        const { name, email, password } = req.body;
+        const hashedPassword = bcrypt_1.default.hashSync(password, 7);
+        const newUser = {
+            name: name,
+            email: email,
+            password: hashedPassword,
+        };
         const userExist = await UserModel_1.UserModel.query().where({ email: email });
         if (!userExist.length) {
             const savedUser = await UserModel_1.UserModel.query().insert(newUser);
-            return res
-                .status(201)
-                .send({ message: "user created", user: savedUser });
+            return res.status(201).send("user created");
         }
         else {
             return res.status(409).send("user already exist");
         }
     }
     catch (err) {
-        console.log(err);
+        return res.send(err.message);
     }
 };
 userController.loginUser = async (req, res) => {
@@ -73,7 +71,7 @@ userController.loginUser = async (req, res) => {
         if (userExist) {
             const isMatch = bcrypt_1.default.compareSync(password, userExist.password);
             if (isMatch) {
-                const token = jsonwebtoken_1.default.sign({ user_id: userExist.id }, sqlConfig_1.dbConfig.jwtkey, {
+                const token = jsonwebtoken_1.default.sign({ user_id: userExist.id }, sqlConfig_1.dbconfig.jwtkey, {
                     expiresIn: "1h",
                 });
                 return res.send(token);
@@ -83,7 +81,7 @@ userController.loginUser = async (req, res) => {
         return res.status(404).send("user doesn't exist");
     }
     catch (err) {
-        console.log(err);
+        return res.send(err.message);
     }
 };
 userController.updateUser = async (req, res) => {
@@ -101,21 +99,6 @@ userController.updateUser = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(err);
-    }
-};
-userController.deleteUser = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const deletedUser = await UserModel_1.UserModel.query().deleteById(id);
-        if (deletedUser) {
-            return res.send("user deleted");
-        }
-        else {
-            return res.status(404).send("user with ID no found");
-        }
-    }
-    catch (err) {
-        console.log(err);
+        return res.send(err.message);
     }
 };

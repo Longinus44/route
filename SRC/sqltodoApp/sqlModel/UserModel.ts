@@ -19,7 +19,7 @@ export class UserModel extends Model {
         to: "todo.user_id",
       },
       filter: (query: any) => {
-        query.select("title", "item", "id");
+        query.select("title", "id", "status");
       },
     },
   };

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authorisedUser = void 0;
 const authorisedUser = (req, res, next) => {
     try {
-        const token = req.header("Authorization");
+        const token = req.header("Auth-token");
         if (!token) {
             throw new Error();
         }

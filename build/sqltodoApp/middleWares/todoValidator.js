@@ -6,7 +6,7 @@ exports.todoValidator = [
     (0, express_validator_1.body)("title")
         .isLength({ min: 5 })
         .withMessage("title must be at least 6 characters long"),
-    (0, express_validator_1.body)("item")
+    (0, express_validator_1.body)("items")
         .isLength({ min: 3 })
         .withMessage("item must be at least 4 characters long"),
 ];

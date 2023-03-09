@@ -2,10 +2,9 @@ export enum STATUS {
   COMPLETED = "completed",
   PENDING = "pending",
 }
-
-export interface ITodo {
+export interface ITodoitem {
   id: string;
-  title: string;
-  user_id: string;
+  item: string;
   status: STATUS;
+  todo_id: string;
 }
